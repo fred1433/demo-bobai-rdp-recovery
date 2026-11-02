@@ -1,0 +1,8 @@
+10:53:19 [info] Transaction DEMO-HH-014 / 2026-11: 4 prepared values. Model on exceptions: qwen2.5vl:7b via Ollama (local).
+10:53:19 [alert] Save sent. Result unknown. Checking existing record.
+10:53:19 [info] Journal: submit intent at 10:53:14 by run 20261102-105245, Save click sent, no confirmation read. Submitting is disabled.
+10:53:19 [info] A confirmation box is on screen (R-10481). Treated as a hint only; closing it and searching.
+10:53:23 [check] Search 1/3: 1 record(s) for DEMO-HH-014, period 2026-11.
+10:53:26 [check] R-10481 reopened: household DEMO-HH-014, period 2026-11, 4 of 4 values match the submitted values.
+10:53:27 [ok] Status: RECOVERED_VERIFIED R-10481. Save clicks in journal: 1. Model calls this run: 0.
+{"status": "RECOVERED_VERIFIED", "ref": "R-10481", "model_calls": 0, "inputs_sent": 17, "save_clicks_in_journal": 1, "operator_values": {"monthly_wages": "1865.00"}}

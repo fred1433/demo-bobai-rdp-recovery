@@ -1,0 +1,108 @@
+{
+ "exit": 0,
+ "summary": {
+  "status": "COMPLETED_VERIFIED",
+  "ref": "R-10481",
+  "model_calls": 1,
+  "inputs_sent": 56,
+  "save_clicks_in_journal": 1,
+  "operator_values": {}
+ },
+ "scenario": "popup",
+ "faults": {
+  "save_latency": 2.5,
+  "index_delay": 0,
+  "popup_on_income_tab": true
+ },
+ "host_check": {
+  "household": "DEMO-HH-014",
+  "period": "2026-11",
+  "records_on_host": 1,
+  "numbers": [
+   "R-10481"
+  ],
+  "values": [
+   {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   }
+  ]
+ },
+ "journal": [
+  {
+   "t": 1793627802.597,
+   "event": "PRECHECK_NONE"
+  },
+  {
+   "t": 1793627806.435,
+   "event": "FIELD_SET",
+   "field": "members",
+   "value": "3"
+  },
+  {
+   "t": 1793627809.111,
+   "event": "FIELD_SET",
+   "field": "effective_date",
+   "value": "12/01/2026"
+  },
+  {
+   "t": 1793627810.704,
+   "event": "MODEL_CALL",
+   "model": "qwen2.5vl:7b via Ollama (local)",
+   "label": "warning_or_notice",
+   "seconds": 0.1
+  },
+  {
+   "t": 1793627810.704,
+   "event": "ASSISTANCE_REQUIRED",
+   "code": "UNEXPECTED_SCREEN",
+   "msg": "An unexpected notice is open in the application. The agent will not answer it for you. Resolve it in the window, then resume."
+  },
+  {
+   "t": 1793627820.38,
+   "event": "FIELD_SET",
+   "field": "monthly_wages",
+   "value": "1840.00"
+  },
+  {
+   "t": 1793627822.655,
+   "event": "FIELD_SET",
+   "field": "monthly_benefits",
+   "value": "260.00"
+  },
+  {
+   "t": 1793627826.69,
+   "event": "SUBMIT_INTENT",
+   "run": "20261102-105639",
+   "values": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   },
+   "read_back": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   }
+  },
+  {
+   "t": 1793627827.13,
+   "event": "SAVE_CLICK_SENT",
+   "intent_t": 1793627826.69
+  },
+  {
+   "t": 1793627830.516,
+   "event": "CONFIRMATION_SEEN",
+   "number": "R-10481"
+  },
+  {
+   "t": 1793627835.994,
+   "event": "CONFIRMED_AND_VERIFIED",
+   "number": "R-10481"
+  }
+ ]
+}

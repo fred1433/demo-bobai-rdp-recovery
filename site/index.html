@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interrupted Save Recovery</title>
+<meta name="description" content="An attended executor drives a synthetic case application through a remote desktop window, is killed right after Save, and verifies the record on restart instead of submitting again.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --wall: #e6e9ed;
+  --paper: #ffffff;
+  --ink: #1d2433;
+  --muted: #555e6c;
+  --rule: #c9ced6;
+  --win: #d4d0c8;
+  --win-dark: #808080;
+  --navy: #0a246a;
+  --manila: #ead39a;
+  --manila-edge: #c7a85a;
+  --ok: #1f6f43;
+  --warn: #8f5400;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--wall); color: var(--ink);
+  font: 400 17px/1.55 "Public Sans", system-ui, sans-serif;
+}
+a { color: var(--navy); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 3px solid var(--navy); outline-offset: 2px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 28px; }
+header.top { padding: 22px 0 0; font-size: 15px; color: var(--muted); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+header.top b { color: var(--ink); font-weight: 600; }
+
+/* 1. the proof */
+.hero { padding: 54px 0 26px; max-width: 860px; }
+h1 { font-size: clamp(34px, 5vw, 58px); line-height: 1.04; letter-spacing: -0.02em; font-weight: 700; margin: 0 0 22px; }
+.lede { font-size: 19px; max-width: 64ch; margin: 0 0 18px; }
+.promise { margin: 0; padding: 12px 16px; max-width: 64ch; background: var(--paper); border-left: 4px solid var(--navy); font-weight: 500; }
+
+.folder { margin: 34px 0 0; position: relative; }
+.folder .tab {
+  display: inline-block; background: var(--manila); border: 1px solid var(--manila-edge); border-bottom: 0;
+  padding: 7px 18px 6px; border-radius: 8px 8px 0 0; font-weight: 600; font-size: 15px; position: relative; top: 1px;
+}
+.folder .sheet { background: var(--manila); border: 1px solid var(--manila-edge); border-radius: 0 8px 8px 8px; padding: 14px; }
+.screen { background: var(--win); padding: 3px; border: 2px solid; border-color: #fff var(--win-dark) var(--win-dark) #fff; }
+video { display: block; width: 100%; height: auto; background: #e6e9ed; }
+.note { font-size: 14.5px; color: #3e3622; margin: 10px 2px 0; }
+
+.after { display: grid; grid-template-columns: 1.35fr 1fr; gap: 28px; margin: 26px 0 0; align-items: start; }
+.register { background: var(--paper); border: 1px solid var(--rule); }
+.register h2, .facts h2 { font-size: 16px; font-weight: 600; margin: 0; padding: 12px 16px; border-bottom: 1px solid var(--rule); }
+.register ol { list-style: none; margin: 0; padding: 6px 0; }
+.register button {
+  all: unset; box-sizing: border-box; display: grid; grid-template-columns: 76px 1fr; gap: 12px; width: 100%;
+  padding: 7px 16px; cursor: pointer; font-size: 15.5px; line-height: 1.4;
+}
+.register button:hover { background: #f2f4f7; }
+.register button[aria-current="true"] { background: #e8edf7; box-shadow: inset 4px 0 0 var(--navy); }
+.register .clock { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 14px; color: var(--muted); padding-top: 1px; }
+.register .hint { font-size: 13.5px; color: var(--muted); padding: 0 16px 12px; margin: 0; }
+
+.facts { background: var(--win); border: 2px solid; border-color: #fff var(--win-dark) var(--win-dark) #fff; }
+.facts h2 { background: var(--navy); color: #fff; border: 0; font-size: 15px; padding: 7px 12px; }
+.facts dl { margin: 0; padding: 12px 14px 4px; }
+.facts .row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; margin-bottom: 10px; }
+.facts dt { font-size: 15px; }
+.facts dd { margin: 0; background: #fff; border: 2px solid; border-color: var(--win-dark) #fff #fff var(--win-dark); padding: 2px 10px; min-width: 64px; text-align: right; font-weight: 600; font-variant-numeric: tabular-nums; }
+.facts dd.ok { color: var(--ok); }
+.facts p { font-size: 13.5px; margin: 0; padding: 0 14px 12px; color: #2f3440; }
+
+section { padding: 64px 0 0; }
+h2.sec { font-size: clamp(26px, 3vw, 34px); line-height: 1.15; letter-spacing: -0.01em; margin: 0 0 14px; font-weight: 700; }
+.split { display: grid; grid-template-columns: 1.5fr 1fr; gap: 32px; align-items: start; }
+.split p { margin: 0 0 14px; max-width: 60ch; }
+.clip { background: var(--win); padding: 3px; border: 2px solid; border-color: #fff var(--win-dark) var(--win-dark) #fff; }
+
+table { border-collapse: collapse; width: 100%; background: var(--paper); font-size: 15.5px; }
+th, td { text-align: left; vertical-align: top; padding: 9px 14px; border-bottom: 1px solid var(--rule); }
+th { font-weight: 600; background: #f3f4f6; }
+td.k { width: 30%; font-weight: 500; }
+.tables { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+.tables > div, .after > div, .split > div { min-width: 0; }
+.tables h3 { font-size: 17px; margin: 0 0 10px; }
+td.st { font-weight: 600; }
+td.st.ok { color: var(--ok); } td.st.wa { color: var(--warn); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.small { font-size: 14px; color: var(--muted); margin: 10px 0 0; }
+
+.code ul { margin: 0 0 16px; padding-left: 20px; max-width: 70ch; }
+.code li { margin-bottom: 8px; }
+.code code { font-family: "IBM Plex Mono", ui-monospace, monospace; font-size: 14.5px; background: var(--paper); padding: 1px 5px; border: 1px solid var(--rule); }
+.call { margin: 30px 0 0; background: var(--paper); border: 1px solid var(--rule); padding: 24px 26px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+.call p { margin: 0; max-width: 62ch; }
+.btn { display: inline-block; background: var(--navy); color: #fff; text-decoration: none; font-weight: 600; padding: 12px 20px; border: 2px solid; border-color: #3a5cb0 #061642 #061642 #3a5cb0; white-space: nowrap; }
+.btn:hover { background: #0d2f88; }
+footer { padding: 46px 0 50px; font-size: 14.5px; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .after, .split, .tables, .call { grid-template-columns: 1fr; }
+}
+@media (max-width: 560px) {
+  .wrap { padding: 0 16px; }
+  .hero { padding-top: 34px; }
+  .lede { font-size: 17.5px; }
+  .folder .sheet { padding: 8px; }
+  .register button { grid-template-columns: 64px 1fr; padding: 7px 12px; }
+  th, td { padding: 8px 9px; }
+  .tbl-scroll { overflow-x: auto; }
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top"><span><b>The AI Pipe</b>, a demo prepared for Bob.ai</span><span>Synthetic application and data</span></header>
+
+  <div class="hero">
+    <h1>An interrupted save, recovered without a second submission.</h1>
+    <p class="lede">A small attended executor completes one prepared transaction in an application it sees only as the pixels of a remote desktop window. In this run it is killed right after clicking Save. When it starts again it does not know whether the save went through, so it searches, reopens the record and compares every value before doing anything else.</p>
+    <p class="promise">After an interruption, it verifies the result before any new submission. If it cannot conclude, it stops.</p>
+  </div>
+
+  <div class="folder">
+    <span class="tab">Case DEMO-HH-014, period 2026-11</span>
+    <div class="sheet">
+      <div class="screen">
+        <video id="film" controls muted playsinline preload="metadata" poster="media/recovery-poster.jpg" aria-label="Recorded run: data entry, pause and takeover, Save, process killed, restart and verification">
+          <source src="media/recovery.mp4" type="video/mp4">
+        </video>
+      </div>
+      <p class="note">Recorded test. FreeRDP client on macOS, Linux xrdp host. Synthetic application and data. Windows client not tested. Real time, no sound; the first 8 seconds repeat the restart moment.</p>
+    </div>
+  </div>
+
+  <div class="after">
+    <div class="register">
+      <h2>Moments in this run</h2>
+      <ol id="marks"><li><button type="button" data-at="0"><span class="clock">0:00</span><span>Excerpt: the restart, shown first</span></button></li>
+<li><button type="button" data-at="10.2"><span class="clock">10:58:54</span><span>Prepared values typed into the remote app, each one read back from the pixels</span></button></li>
+<li><button type="button" data-at="24.8"><span class="clock">10:59:09</span><span>Operator presses Pause: no further input. They correct a value by hand</span></button></li>
+<li><button type="button" data-at="29.1"><span class="clock">10:59:13</span><span>Resume: fresh capture. The operator&#x27;s value is kept, not overwritten</span></button></li>
+<li><button type="button" data-at="42.2"><span class="clock">10:59:26</span><span>Intent written to the journal, then Save is clicked</span></button></li>
+<li><button type="button" data-at="42.7"><span class="clock">10:59:27</span><span>The executor is killed before it reads the result</span></button></li>
+<li><button type="button" data-at="46.8"><span class="clock">10:59:31</span><span>Restart: result unknown. Search, reopen, compare. Save is disabled</span></button></li>
+<li><button type="button" data-at="55.3"><span class="clock">10:59:39</span><span>Verified on screen. No second Save</span></button></li></ol>
+      <p class="hint">Each line jumps the video to that moment. Times are the clock of the recorded run.</p>
+    </div>
+    <div class="facts">
+      <h2>After the run</h2>
+      <dl><div class="row"><dt>Executor status after restart</dt><dd class="ok">RECOVERED_VERIFIED R-10481</dd></div>
+<div class="row"><dt>Records on the host for DEMO-HH-014, 2026-11</dt><dd class="ok">1</dd></div>
+<div class="row"><dt>Save clicks in the journal</dt><dd class="">1</dd></div>
+<div class="row"><dt>Model calls in this run</dt><dd class="">0</dd></div>
+<div class="row"><dt>Kept the operator&#x27;s value for monthly wages (prepared 1840.00)</dt><dd class="">1865.00</dd></div></dl>
+      <p>The record count is read from the host's storage by a separate test script after the run. The executor never reads it; it only sees the screen.</p>
+    </div>
+  </div>
+
+  <section>
+    <h2 class="sec">When the screen proves nothing, it stops</h2>
+    <div class="split">
+      <div class="clip">
+        <video controls muted playsinline preload="metadata" poster="media/ambiguous-poster.jpg" aria-label="Recorded run: save accepted, record not listed, the executor asks for assistance">
+          <source src="media/ambiguous.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div>
+<p>Here the application accepts the Save but returns to its list without a confirmation, and the list lags behind. The executor searches 3 times over 17 seconds and finds nothing.</p>
+<p>An empty list does not prove that nothing was saved, so it stops with <b>assistance required</b> and does not submit again.</p>
+<p>The check on the host afterwards: 1 record for DEMO-HH-014, 2026-11. It had been saved. A second submission would have made a duplicate. Save clicks in the journal: 1.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="sec">What actually ran</h2>
+    <div class="tables">
+      <div>
+        <h3>The bench</h3>
+        <div class="tbl-scroll"><table><tbody><tr><td class="k">Workstation side</td><td>macOS 27.2 on Apple M1 Max. FreeRDP 3.32.2 client, drawing into a virtual screen (Xvfb in a container, localhost only) so the real desktop is never captured or typed into.</td></tr>
+<tr><td class="k">Remote side</td><td>Debian 12 container with xrdp 0.9.21.1. It runs the synthetic application and nothing from the executor.</td></tr>
+<tr><td class="k">Application</td><td>Synthetic, written for this test: search, two-tab form, Save, saved-record list, read-only record. It accepts duplicate saves on purpose.</td></tr>
+<tr><td class="k">Reading the screen</td><td>Tesseract 5.5.2, local. Each value is read by four OCR variants that must agree three times out of four, else it counts as unreadable.</td></tr>
+<tr><td class="k">Model</td><td>Qwen2.5-VL 7B Instruct (Apache-2.0) through Ollama on the same Mac, only when the screen matches no known state. It returns a label from a fixed list and never clicks.</td></tr>
+<tr><td class="k">Remote model API</td><td>None. Cost 0 $.</td></tr></tbody></table></div>
+      </div>
+      <div>
+        <h3>Every replay, exact results</h3>
+        <div class="tbl-scroll"><table><thead><tr><th>Scenario</th><th>Final status per run</th><th class="num">Save clicks</th><th class="num">Records on host</th></tr></thead><tbody><tr><td>Pause, operator edit, Save, kill -9, restart.</td><td class="st ok">5 of 5 recovered verified</td><td class="num">1 in each</td><td class="num">1 in each</td></tr>
+<tr><td>Saved, not listed, no confirmation.</td><td class="st wa">3 of 3 assistance required</td><td class="num">1 in each</td><td class="num">1 in each</td></tr>
+<tr><td>Unexpected notice on the Income tab. Model calls: 2.</td><td class="st ok">2 of 2 completed verified</td><td class="num">1 in each</td><td class="num">1 in each</td></tr>
+<tr><td>Another window takes keyboard focus.</td><td class="st ok">1 of 1 completed verified</td><td class="num">1 in each</td><td class="num">1 in each</td></tr>
+<tr><td>Client window moved mid-run.</td><td class="st ok">1 of 1 completed verified</td><td class="num">1 in each</td><td class="num">1 in each</td></tr></tbody></table></div>
+        <p class="small">12 replays on the final code, each from an empty host. Model calls across all of them: 2. Per-run journals and logs are in the repository under trials/.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="code">
+    <h2 class="sec">The code, and what a first call would cover</h2>
+    <p>The repository is meant to be read by the engineers who already own your desktop workflows. The parts that matter:</p>
+    <ul>
+      <li><code>executor/run.py</code>: the one place where Save may be clicked, and the recovery path where it may not.</li>
+      <li><code>executor/journal.py</code>: the submit intent is written and flushed to disk before the click.</li>
+      <li><code>executor/screen.py</code>: capture of the client window and local input. It is the only file a Windows port replaces.</li>
+      <li><code>executor/ocr.py</code> and <code>executor/vision.py</code>: reading values from pixels; the model is called only on an unknown screen and returns a label from a fixed list.</li>
+      <li><code>scripts/scenario.py</code>: replays every case above, with the operator and the faults played by a separate process.</li>
+    </ul>
+    <p>Not covered here: your application, your platform and data, your remote desktop client, a Windows workstation (capture and input permissions, display scaling), scrolling and longer transactions.</p>
+    <div class="call">
+      <p>Fifteen minutes with you or the engineer who owns the automation: which remote desktop client your customers use, a walkthrough of the transaction, and how the application shows a saved record. That is enough to say what of this carries over.</p>
+      <a class="btn" href="https://cal.theaipipe.com">Book 15 minutes</a>
+    </div>
+    <p class="small">Source: <a href="https://github.com/fred1433/demo-bobai-rdp-recovery">github.com/fred1433/demo-bobai-rdp-recovery</a></p>
+  </section>
+
+  <footer>Built by Frederic de Lavenne de Choulot, The AI Pipe. All households, values and record numbers on this page are synthetic.</footer>
+</div>
+<script>
+(function () {
+  var v = document.getElementById('film');
+  var items = Array.prototype.slice.call(document.querySelectorAll('#marks button'));
+  items.forEach(function (b) {
+    b.addEventListener('click', function () {
+      v.currentTime = parseFloat(b.dataset.at);
+      var p = v.play(); if (p && p.catch) p.catch(function () {});
+    });
+  });
+  function mark() {
+    var t = v.currentTime, cur = null;
+    items.forEach(function (b) { if (parseFloat(b.dataset.at) <= t + 0.05) cur = b; });
+    items.forEach(function (b) { b.setAttribute('aria-current', b === cur ? 'true' : 'false'); });
+  }
+  v.addEventListener('timeupdate', mark);
+  v.addEventListener('seeked', mark);
+})();
+</script>
+</body>
+</html>

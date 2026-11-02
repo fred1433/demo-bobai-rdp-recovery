@@ -1,0 +1,37 @@
+[
+ {
+  "at": 10.2,
+  "caption": "Prepared values typed into the remote app, each one read back from the pixels",
+  "clock": "10:58:54"
+ },
+ {
+  "at": 24.8,
+  "caption": "Operator presses Pause: no further input. They correct a value by hand",
+  "clock": "10:59:09"
+ },
+ {
+  "at": 29.1,
+  "caption": "Resume: fresh capture. The operator's value is kept, not overwritten",
+  "clock": "10:59:13"
+ },
+ {
+  "at": 42.2,
+  "caption": "Intent written to the journal, then Save is clicked",
+  "clock": "10:59:26"
+ },
+ {
+  "at": 42.7,
+  "caption": "The executor is killed before it reads the result",
+  "clock": "10:59:27"
+ },
+ {
+  "at": 46.8,
+  "caption": "Restart: result unknown. Search, reopen, compare. Save is disabled",
+  "clock": "10:59:31"
+ },
+ {
+  "at": 55.3,
+  "caption": "Verified on screen. No second Save",
+  "clock": "10:59:39"
+ }
+]

@@ -1,0 +1,105 @@
+{
+ "first_exit": -9,
+ "restart_exit": 0,
+ "restart_summary": {
+  "status": "RECOVERED_VERIFIED",
+  "ref": "R-10481",
+  "model_calls": 0,
+  "inputs_sent": 17,
+  "save_clicks_in_journal": 1,
+  "operator_values": {
+   "monthly_wages": "1865.00"
+  }
+ },
+ "scenario": "recovery",
+ "faults": {
+  "save_latency": 2.5,
+  "index_delay": 0
+ },
+ "host_check": {
+  "household": "DEMO-HH-014",
+  "period": "2026-11",
+  "records_on_host": 1,
+  "numbers": [
+   "R-10481"
+  ],
+  "values": [
+   {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1865.00",
+    "monthly_benefits": "260.00"
+   }
+  ]
+ },
+ "journal": [
+  {
+   "t": 1793627614.322,
+   "event": "PRECHECK_NONE"
+  },
+  {
+   "t": 1793627618.223,
+   "event": "FIELD_SET",
+   "field": "members",
+   "value": "3"
+  },
+  {
+   "t": 1793627621.175,
+   "event": "FIELD_SET",
+   "field": "effective_date",
+   "value": "12/01/2026"
+  },
+  {
+   "t": 1793627625.729,
+   "event": "FIELD_SET",
+   "field": "monthly_wages",
+   "value": "1840.00"
+  },
+  {
+   "t": 1793627635.825,
+   "event": "OPERATOR_VALUE",
+   "field": "monthly_wages",
+   "entered": "1840.00",
+   "on_screen": "1865.00"
+  },
+  {
+   "t": 1793627638.096,
+   "event": "FIELD_SET",
+   "field": "monthly_benefits",
+   "value": "260.00"
+  },
+  {
+   "t": 1793627642.122,
+   "event": "SUBMIT_INTENT",
+   "run": "20261102-105331",
+   "values": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1865.00",
+    "monthly_benefits": "260.00"
+   },
+   "read_back": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1865.00",
+    "monthly_benefits": "260.00"
+   }
+  },
+  {
+   "t": 1793627642.564,
+   "event": "SAVE_CLICK_SENT",
+   "intent_t": 1793627642.122
+  },
+  {
+   "t": 1793627646.722,
+   "event": "RECOVERY_START",
+   "intent_t": 1793627642.122
+  },
+  {
+   "t": 1793627654.836,
+   "event": "RECOVERED_VERIFIED",
+   "number": "R-10481",
+   "searches": 1
+  }
+ ]
+}

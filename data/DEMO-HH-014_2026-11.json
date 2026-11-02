@@ -1,0 +1,11 @@
+{
+  "_note": "Synthetic test case. Prepared upstream (in production: by the platform). No real household.",
+  "household_id": "DEMO-HH-014",
+  "period": "2026-11",
+  "values": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+  }
+}

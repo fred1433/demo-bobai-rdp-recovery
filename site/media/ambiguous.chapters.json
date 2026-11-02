@@ -1,0 +1,17 @@
+[
+ {
+  "at": 0.0,
+  "caption": "Save is clicked. The app returns to the list with no confirmation",
+  "clock": "11:00:06"
+ },
+ {
+  "at": 8.2,
+  "caption": "The record is not listed yet. The executor searches again, with a time limit",
+  "clock": "11:00:15"
+ },
+ {
+  "at": 22.8,
+  "caption": "It stops and asks for help. It does not submit again",
+  "clock": "11:00:29"
+ }
+]

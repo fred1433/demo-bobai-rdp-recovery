@@ -1,0 +1,8 @@
+.run/
+venv/
+__pycache__/
+*.pyc
+runs/
+.DS_Store
+.wrangler/
+node_modules/
