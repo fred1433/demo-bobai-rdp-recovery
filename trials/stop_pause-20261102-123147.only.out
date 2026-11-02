@@ -1,0 +1,11 @@
+12:31:51 [info] Transaction DEMO-HH-014 / 2026-11: 4 prepared values. Model on exceptions: qwen2.5vl:7b via Ollama (local).
+12:31:55 [check] Pre-check: no saved record for DEMO-HH-014, period 2026-11.
+12:31:56 [check] Form open for DEMO-HH-014, period 2026-11 (read on screen).
+12:31:57 [action] Entering Members in household: 3
+12:31:59 [check] Members in household: read back 3, matches.
+12:31:59 [action] Entering Effective date: 12/01/2026
+12:32:03 [check] Effective date: read back 12/01/2026, matches.
+12:32:03 [alert] Paused by operator. No further input is sent.
+12:32:05 [alert] Stopped by operator. No further input.
+12:32:05 [alert] Status: STOPPED. Save clicks in journal: 0. Model calls this run: 0.
+{"status": "STOPPED", "ref": null, "model_calls": 0, "inputs_sent": 30, "save_clicks_in_journal": 0, "operator_values": {}}

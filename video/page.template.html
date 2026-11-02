@@ -6,6 +6,12 @@
 <title>Interrupted Save Recovery</title>
 <meta name="description" content="An attended executor drives a synthetic case application through a remote desktop window, is killed right after Save, and verifies the record on restart instead of submitting again.">
 <meta name="robots" content="noindex, nofollow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="An interrupted save, recovered without resubmitting">
+<meta property="og:description" content="An attended executor drives a synthetic app through a remote desktop window, is killed right after Save, and verifies the record on restart instead of submitting again. Recorded test, source included.">
+<meta property="og:url" content="https://theaipipe.com/demos/rdp-recovery/">
+<meta property="og:image" content="https://theaipipe.com/demos/rdp-recovery/media/recovery-poster.jpg">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="icon" href="favicon.png" type="image/png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
@@ -40,17 +46,19 @@ header.top { padding: 22px 0 0; font-size: 15px; color: var(--muted); display: f
 header.top b { color: var(--ink); font-weight: 600; }
 
 /* 1. the proof */
-.hero { padding: 36px 0 0; max-width: 860px; }
-h1 { font-size: clamp(32px, 4.4vw, 52px); line-height: 1.04; letter-spacing: -0.02em; font-weight: 700; margin: 0 0 22px; }
-.lede { font-size: 19px; max-width: 64ch; margin: 0 0 18px; }
-.promise { margin: 0; padding: 12px 16px; max-width: 64ch; background: var(--paper); border-left: 4px solid var(--navy); font-weight: 500; }
+.hero { padding: 30px 0 0; max-width: 1000px; }
+h1 { font-size: clamp(30px, 3.4vw, 46px); line-height: 1.06; letter-spacing: -0.02em; font-weight: 700; margin: 0 0 14px; }
+.lede { font-size: 18.5px; max-width: 1000px; margin: 0; }
+.promise { margin: 0 0 22px; padding: 12px 16px; max-width: 64ch; background: var(--paper); border-left: 4px solid var(--navy); font-weight: 500; }
 
-.folder { margin: 28px 0 0; position: relative; }
+.folder { margin: 22px 0 0; position: relative; max-width: 1010px; }
 .folder .tab {
   display: inline-block; background: var(--manila); border: 1px solid var(--manila-edge); border-bottom: 0;
   padding: 7px 18px 6px; border-radius: 8px 8px 0 0; font-weight: 600; font-size: 15px; position: relative; top: 1px;
 }
-.folder .sheet { background: var(--manila); border: 1px solid var(--manila-edge); border-radius: 0 8px 8px 8px; padding: 14px; }
+.folder .sheet { background: var(--manila); border: 1px solid var(--manila-edge); border-radius: 0 8px 8px 8px; padding: 14px; box-shadow: 0 14px 26px -16px rgba(70, 52, 10, 0.45); }
+.film-mobile { display: none; }
+.nw { white-space: nowrap; }
 .screen { background: var(--win); padding: 3px; border: 2px solid; border-color: #fff var(--win-dark) var(--win-dark) #fff; }
 video { display: block; width: 100%; height: auto; background: #e6e9ed; }
 .note { font-size: 14.5px; color: #3e3622; margin: 10px 2px 0; }
@@ -113,6 +121,8 @@ footer { padding: 46px 0 50px; font-size: 14.5px; color: var(--muted); }
   .lede { font-size: 17.5px; }
   .folder .sheet { padding: 8px; }
   .register button { grid-template-columns: 64px 1fr; padding: 7px 12px; }
+  .film-wide { display: none; }
+  .film-mobile { display: block; }
   .facts .row { grid-template-columns: 1fr; gap: 4px; }
   .facts dd { justify-self: start; text-align: left; }
   th, td { padding: 8px 9px; }
@@ -125,20 +135,22 @@ footer { padding: 46px 0 50px; font-size: 14.5px; color: var(--muted); }
   <header class="top"><span><b>The AI Pipe</b>, a demo prepared for Bob.ai</span><span>Synthetic application and data</span></header>
 
   <div class="hero">
-    <h1>An interrupted save, recovered without a second submission.</h1>
-    <p class="lede">A small attended executor completes one prepared transaction in an application it sees only as the pixels of a remote desktop window. Here it is killed right after clicking Save. On restart it does not know whether the save went through, so it searches, reopens the record and compares every value before anything else.</p>
-    <p class="promise">After an interruption, it verifies the result before any new submission. If it cannot conclude, it stops.</p>
+    <h1>An interrupted save, recovered without resubmitting.</h1>
+    <p class="lede">An attended executor drives a synthetic case application it sees only as the pixels of a remote desktop window. Killed right after clicking Save, it restarts, checks the record on screen and does not submit again.</p>
   </div>
 
   <div class="folder">
     <span class="tab">Case DEMO-HH-014, period 2026-11</span>
     <div class="sheet">
       <div class="screen">
-        <video id="film" controls muted playsinline preload="metadata" poster="media/recovery-poster.jpg" aria-label="Recorded run: data entry, pause and takeover, Save, process killed, restart and verification">
+        <video class="film film-wide" controls muted playsinline preload="metadata" poster="media/recovery-poster.jpg" aria-label="Recorded run: data entry, pause and takeover, Save, process killed, restart and verification">
           <source src="media/recovery.mp4" type="video/mp4">
         </video>
+        <video class="film film-mobile" controls muted playsinline preload="metadata" poster="media/recovery-mobile-poster.jpg" aria-label="Recorded run, phone version cropped to the remote desktop window">
+          <source src="media/recovery-mobile.mp4" type="video/mp4">
+        </video>
       </div>
-      <p class="note">Recorded test. FreeRDP client on macOS, Linux xrdp host. Synthetic application and data. Windows client not tested. Real time, no sound; the first 8 seconds repeat the restart moment.</p>
+      <p class="note">Recorded test. FreeRDP client on macOS, Linux xrdp host. Synthetic application and data. Windows client not tested. Operator actions and faults are scripted; the executor runs independently. Real time, no sound; the first 8 seconds show the restart, seen again later in the run.</p>
     </div>
   </div>
 
@@ -146,7 +158,7 @@ footer { padding: 46px 0 50px; font-size: 14.5px; color: var(--muted); }
     <div class="register">
       <h2>Moments in this run</h2>
       <ol id="marks"><!--MARKS--></ol>
-      <p class="hint">Each line jumps the video to that moment. Times are the clock of the recorded run.</p>
+      <p class="hint">Each line jumps the video to that moment. Times are the clock of the recorded run; the application shows the same clock.</p>
     </div>
     <div class="facts">
       <h2>After the run</h2>
@@ -157,6 +169,7 @@ footer { padding: 46px 0 50px; font-size: 14.5px; color: var(--muted); }
 
   <section>
     <h2 class="sec">When the screen proves nothing, it stops</h2>
+    <p class="promise">After an interruption, it verifies the result before any new submission. If it cannot conclude, it stops.</p>
     <div class="split">
       <div class="clip">
         <video controls muted playsinline preload="metadata" poster="media/ambiguous-poster.jpg" aria-label="Recorded run: save accepted, record not listed, the executor asks for assistance">
@@ -186,13 +199,14 @@ footer { padding: 46px 0 50px; font-size: 14.5px; color: var(--muted); }
     <h2 class="sec">The code, and what a first call would cover</h2>
     <p>The repository is meant to be read by the engineers who already own your desktop workflows. The parts that matter:</p>
     <ul>
-      <li><code>executor/run.py</code>: the one place where Save may be clicked, and the recovery path where it may not.</li>
-      <li><code>executor/journal.py</code>: the submit intent is written and flushed to disk before the click.</li>
-      <li><code>executor/screen.py</code>: capture of the client window and local input. It is the only file a Windows port replaces.</li>
+      <li><code>executor/run.py</code>: the one place where Save may be clicked, the recovery path where it may not, and the pause, stop and takeover handling.</li>
+      <li><code>executor/journal.py</code>: the submit intent is written and flushed to disk before the click; a torn line is ignored and the case goes to assistance when its state is uncertain.</li>
+      <li><code>executor/screen.py</code>: capture of the client window and local input, kept apart from the rest. A Windows port replaces it, adds detection of the operator's own mouse and keyboard, and recalibrates the OCR for Windows fonts and scaling.</li>
       <li><code>executor/ocr.py</code> and <code>executor/vision.py</code>: reading values from pixels; the model is called only on an unknown screen and returns a label from a fixed list.</li>
       <li><code>scripts/scenario.py</code>: replays every case above, with the operator and the faults played by a separate process.</li>
     </ul>
-    <p>Not covered here: your application, your platform and data, your remote desktop client, a Windows workstation (capture and input permissions, display scaling), scrolling and longer transactions.</p>
+    <p>The known path is deterministic on purpose (OCR and fixed steps): a transaction should not hang on a model's guess. The model is there for screens the workflow does not know, and the adapter can hand pointing to a computer-use model if your application needs it.</p>
+    <p>Not covered here: your application, your platform and data, your remote desktop client, a Windows workstation (capture and input permissions, display scaling), scrolling and longer transactions. There is no pause button or hotkey yet: pause, resume, stop and clear are commands on a local control file, and in these runs the operator is a script. The virtual screen exists so the faults can be replayed and recorded automatically; it is not a security feature of a workstation.</p>
     <div class="call">
       <p>Fifteen minutes with you or the engineer who owns the automation: which remote desktop client your customers use, a walkthrough of the transaction, and how the application shows a saved record. That is enough to say what of this carries over.</p>
       <a class="btn" href="https://cal.theaipipe.com">Book 15 minutes</a>
@@ -204,21 +218,22 @@ footer { padding: 46px 0 50px; font-size: 14.5px; color: var(--muted); }
 </div>
 <script>
 (function () {
-  var v = document.getElementById('film');
+  var vids = Array.prototype.slice.call(document.querySelectorAll('.film'));
+  function vis() { return vids.filter(function (x) { return x.offsetParent !== null; })[0] || vids[0]; }
   var items = Array.prototype.slice.call(document.querySelectorAll('#marks button'));
   items.forEach(function (b) {
     b.addEventListener('click', function () {
+      var v = vis();
       v.currentTime = parseFloat(b.dataset.at);
       var p = v.play(); if (p && p.catch) p.catch(function () {});
     });
   });
-  function mark() {
-    var t = v.currentTime, cur = null;
+  function mark(e) {
+    var t = e.target.currentTime, cur = null;
     items.forEach(function (b) { if (parseFloat(b.dataset.at) <= t + 0.05) cur = b; });
     items.forEach(function (b) { b.setAttribute('aria-current', b === cur ? 'true' : 'false'); });
   }
-  v.addEventListener('timeupdate', mark);
-  v.addEventListener('seeked', mark);
+  vids.forEach(function (v) { v.addEventListener('timeupdate', mark); v.addEventListener('seeked', mark); });
 })();
 </script>
 </body>

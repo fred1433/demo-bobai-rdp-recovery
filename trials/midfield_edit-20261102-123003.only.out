@@ -1,0 +1,23 @@
+12:30:07 [info] Transaction DEMO-HH-014 / 2026-11: 4 prepared values. Model on exceptions: qwen2.5vl:7b via Ollama (local).
+12:30:11 [check] Pre-check: no saved record for DEMO-HH-014, period 2026-11.
+12:30:12 [check] Form open for DEMO-HH-014, period 2026-11 (read on screen).
+12:30:13 [action] Entering Members in household: 3
+12:30:15 [check] Members in household: read back 3, matches.
+12:30:15 [action] Entering Effective date: 12/01/2026
+12:30:19 [check] Effective date: read back 12/01/2026, matches.
+12:30:20 [action] Entering Monthly wages: 1840.00
+12:30:23 [check] Monthly wages: read back 1840.00, matches.
+12:30:23 [action] Entering Monthly benefits: 260.00
+12:30:24 [alert] Paused by operator. No further input is sent. Mid-entry in Monthly benefits: '260' typed so far.
+12:30:28 [info] Resume requested. Fresh capture; every value is read again before any input.
+12:30:29 [check] Form open for DEMO-HH-014, period 2026-11 (read on screen).
+12:30:33 [alert] Assistance required: Monthly benefits holds 2, which the agent did not type (it had typed '260'). It will not overwrite it. Finish or correct the value, then resume: the value on screen will be kept.
+12:30:37 [info] Resume requested. Fresh capture; every value is read again before any input.
+12:30:38 [check] Form open for DEMO-HH-014, period 2026-11 (read on screen).
+12:30:43 [warn] Monthly benefits: the operator resumed with 275.00 on screen (the agent had typed '260'). Kept as the operator's value, not overwritten.
+12:30:46 [check] Final read-back: all 4 values on screen match the expected values.
+12:30:47 [action] Submit intent journaled (fsync), then Save clicked. Waiting for the application's answer.
+12:30:50 [info] Confirmation box shows R-10481. Not trusted alone: reopening the record.
+12:30:54 [check] R-10481 reopened: household DEMO-HH-014, period 2026-11, 4 of 4 values match the submitted values.
+12:30:54 [ok] Status: COMPLETED_VERIFIED R-10481. Save clicks in journal: 1. Model calls this run: 0.
+{"status": "COMPLETED_VERIFIED", "ref": "R-10481", "model_calls": 0, "inputs_sent": 55, "save_clicks_in_journal": 1, "operator_values": {"monthly_benefits": "275.00"}}

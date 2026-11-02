@@ -1,0 +1,35 @@
+{
+ "exit": 3,
+ "summary": {
+  "status": "ASSISTANCE_REQUIRED",
+  "ref": "JOURNAL_DAMAGED",
+  "model_calls": 0,
+  "inputs_sent": 0,
+  "save_clicks_in_journal": 0,
+  "operator_values": {}
+ },
+ "frame": [
+  127,
+  59,
+  1026,
+  741
+ ],
+ "scenario": "torn_only",
+ "faults": {
+  "save_latency": 2.5,
+  "index_delay": 0
+ },
+ "host_check": {
+  "household": "DEMO-HH-014",
+  "period": "2026-11",
+  "records_on_host": 0,
+  "numbers": [],
+  "values": []
+ },
+ "journal": [
+  {
+   "event": "_UNREADABLE",
+   "raw": "{\"t\": 1793630000.1, \"event\": \"SUBMIT_IN{\"t\": 1793633755.027, \"event\": \"ASSISTANCE_REQUIRED\", \"code\": \"JOURNAL_DAMAGED\"}"
+  }
+ ]
+}

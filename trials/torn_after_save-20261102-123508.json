@@ -1,0 +1,101 @@
+{
+ "first_exit": -9,
+ "restart_exit": 0,
+ "restart_summary": {
+  "status": "RECOVERED_VERIFIED",
+  "ref": "R-10481",
+  "model_calls": 0,
+  "inputs_sent": 17,
+  "save_clicks_in_journal": 1,
+  "operator_values": {}
+ },
+ "frame": [
+  127,
+  59,
+  1026,
+  741
+ ],
+ "scenario": "torn_after_save",
+ "faults": {
+  "save_latency": 2.5,
+  "index_delay": 0
+ },
+ "host_check": {
+  "household": "DEMO-HH-014",
+  "period": "2026-11",
+  "records_on_host": 1,
+  "numbers": [
+   "R-10481"
+  ],
+  "values": [
+   {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   }
+  ]
+ },
+ "journal": [
+  {
+   "t": 1793633717.41,
+   "event": "PRECHECK_NONE"
+  },
+  {
+   "t": 1793633721.78,
+   "event": "FIELD_SET",
+   "field": "members",
+   "value": "3"
+  },
+  {
+   "t": 1793633726.211,
+   "event": "FIELD_SET",
+   "field": "effective_date",
+   "value": "12/01/2026"
+  },
+  {
+   "t": 1793633730.695,
+   "event": "FIELD_SET",
+   "field": "monthly_wages",
+   "value": "1840.00"
+  },
+  {
+   "t": 1793633733.886,
+   "event": "FIELD_SET",
+   "field": "monthly_benefits",
+   "value": "260.00"
+  },
+  {
+   "t": 1793633737.722,
+   "event": "SUBMIT_INTENT",
+   "run": "20261102-123512",
+   "values": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   },
+   "read_back": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   }
+  },
+  {
+   "t": 1793633737.961,
+   "event": "SAVE_CLICK_SENT",
+   "intent_t": 1793633737.722
+  },
+  {
+   "event": "_UNREADABLE",
+   "raw": "{\"t\": 1793630000.1, \"event\": \"CONFIRMATION_SE{\"t\": 1793633742.087, \"event\": \"RECOVERY_START\", \"intent_t\": 1793633737.722"
+  },
+  {
+   "t": 1793633750.983,
+   "event": "RECOVERED_VERIFIED",
+   "number": "R-10481",
+   "searches": 1
+  }
+ ]
+}

@@ -1,0 +1,109 @@
+{
+ "exit": 0,
+ "summary": {
+  "status": "COMPLETED_VERIFIED",
+  "ref": "R-10481",
+  "model_calls": 0,
+  "inputs_sent": 55,
+  "save_clicks_in_journal": 1,
+  "operator_values": {
+   "monthly_benefits": "275.00"
+  }
+ },
+ "frame": [
+  127,
+  59,
+  1026,
+  741
+ ],
+ "scenario": "midfield_edit",
+ "faults": {
+  "save_latency": 2.5,
+  "index_delay": 0
+ },
+ "host_check": {
+  "household": "DEMO-HH-014",
+  "period": "2026-11",
+  "records_on_host": 1,
+  "numbers": [
+   "R-10481"
+  ],
+  "values": [
+   {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "275.00"
+   }
+  ]
+ },
+ "journal": [
+  {
+   "t": 1793633463.05,
+   "event": "PRECHECK_NONE"
+  },
+  {
+   "t": 1793633467.158,
+   "event": "FIELD_SET",
+   "field": "members",
+   "value": "3"
+  },
+  {
+   "t": 1793633471.152,
+   "event": "FIELD_SET",
+   "field": "effective_date",
+   "value": "12/01/2026"
+  },
+  {
+   "t": 1793633475.728,
+   "event": "FIELD_SET",
+   "field": "monthly_wages",
+   "value": "1840.00"
+  },
+  {
+   "t": 1793633486.443,
+   "event": "ASSISTANCE_REQUIRED",
+   "code": "HUMAN_EDIT",
+   "msg": "Monthly benefits holds 2, which the agent did not type (it had typed '260'). It will not overwrite it. Finish or correct the value, then resume: the value on screen will be kept."
+  },
+  {
+   "t": 1793633496.343,
+   "event": "OPERATOR_VALUE",
+   "field": "monthly_benefits",
+   "entered": "260",
+   "on_screen": "275.00"
+  },
+  {
+   "t": 1793633500.307,
+   "event": "SUBMIT_INTENT",
+   "run": "20261102-123058",
+   "values": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "275.00"
+   },
+   "read_back": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "275.00"
+   }
+  },
+  {
+   "t": 1793633500.517,
+   "event": "SAVE_CLICK_SENT",
+   "intent_t": 1793633500.307
+  },
+  {
+   "t": 1793633503.452,
+   "event": "CONFIRMATION_SEEN",
+   "number": "R-10481"
+  },
+  {
+   "t": 1793633507.527,
+   "event": "CONFIRMED_AND_VERIFIED",
+   "number": "R-10481"
+  }
+ ]
+}

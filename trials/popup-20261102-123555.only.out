@@ -1,0 +1,22 @@
+12:35:59 [info] Transaction DEMO-HH-014 / 2026-11: 4 prepared values. Model on exceptions: qwen2.5vl:7b via Ollama (local).
+12:36:02 [check] Pre-check: no saved record for DEMO-HH-014, period 2026-11.
+12:36:04 [check] Form open for DEMO-HH-014, period 2026-11 (read on screen).
+12:36:05 [action] Entering Members in household: 3
+12:36:06 [check] Members in household: read back 3, matches.
+12:36:07 [action] Entering Effective date: 12/01/2026
+12:36:10 [check] Effective date: read back 12/01/2026, matches.
+12:36:11 [alert] Screen does not match any known state. Asking the local vision model to classify it.
+12:36:22 [model] Model call #1 (qwen2.5vl:7b via Ollama (local), 10.5 s): label 'warning_or_notice'.
+12:36:22 [alert] Assistance required: An unexpected notice is open in the application. The agent will not answer it for you. Resolve it in the window, then resume.
+12:36:26 [info] Resume requested. Fresh capture; every value is read again before any input.
+12:36:26 [check] Form open for DEMO-HH-014, period 2026-11 (read on screen).
+12:36:29 [action] Entering Monthly wages: 1840.00
+12:36:32 [check] Monthly wages: read back 1840.00, matches.
+12:36:32 [action] Entering Monthly benefits: 260.00
+12:36:35 [check] Monthly benefits: read back 260.00, matches.
+12:36:38 [check] Final read-back: all 4 values on screen match the expected values.
+12:36:39 [action] Submit intent journaled (fsync), then Save clicked. Waiting for the application's answer.
+12:36:42 [info] Confirmation box shows R-10481. Not trusted alone: reopening the record.
+12:36:46 [check] R-10481 reopened: household DEMO-HH-014, period 2026-11, 4 of 4 values match the submitted values.
+12:36:46 [ok] Status: COMPLETED_VERIFIED R-10481. Save clicks in journal: 1. Model calls this run: 1.
+{"status": "COMPLETED_VERIFIED", "ref": "R-10481", "model_calls": 1, "inputs_sent": 56, "save_clicks_in_journal": 1, "operator_values": {}}

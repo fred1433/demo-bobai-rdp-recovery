@@ -16,8 +16,26 @@ class Journal:
     def events(self):
         if not os.path.exists(self.path):
             return []
+        out = []
         with open(self.path) as f:
-            return [json.loads(l) for l in f if l.strip()]
+            for l in f:
+                if not l.strip():
+                    continue
+                try:
+                    out.append(json.loads(l))
+                except ValueError:  # a torn write (crash mid-line): kept as a marker, never trusted
+                    out.append({"event": "_UNREADABLE", "raw": l.strip()[:120]})
+        return out
+
+    def unreadable(self):
+        """Unreadable lines written after the last operator clearance."""
+        bad = []
+        for e in self.events():
+            if e["event"] == "OPERATOR_CLEARED":
+                bad = []
+            elif e["event"] == "_UNREADABLE":
+                bad.append(e["raw"])
+        return bad
 
     def write(self, event, **data):
         rec = {"t": round(time.time(), 3), "event": event, **data}

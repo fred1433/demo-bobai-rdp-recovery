@@ -1,0 +1,6 @@
+{"t": 1793633854.612, "who": "bench", "msg": "reset: faults={\"save_latency\": 2.5, \"index_delay\": 0}"}
+{"t": 1793633854.735, "who": "bench", "msg": "executor started (only), pid 78890"}
+{"t": 1793633866.699, "who": "operator", "msg": "opens another local window, which takes keyboard focus for 6 s"}
+{"t": 1793633873.536, "who": "operator", "msg": "focus on client window: True"}
+{"t": 1793633874.564, "who": "operator", "msg": "Resume pressed"}
+{"t": 1793633896.227, "who": "bench", "msg": "independent host check: {\"household\": \"DEMO-HH-014\", \"period\": \"2026-11\", \"records_on_host\": 1, \"numbers\": [\"R-10481\"], \"values\": [{\"members\": \"3\", \"effective_date\": \"12/01/2026\", \"monthly_wages\": \"1840.00\", \"monthly_benefits\": \"260.00\"}]}"}

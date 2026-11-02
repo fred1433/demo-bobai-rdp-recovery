@@ -1,0 +1,6 @@
+{"t": 1793633712.482, "who": "bench", "msg": "reset: faults={\"save_latency\": 2.5, \"index_delay\": 0}"}
+{"t": 1793633712.649, "who": "bench", "msg": "executor started (first), pid 73708"}
+{"t": 1793633737.965, "who": "bench", "msg": "executor process killed with SIGKILL right after the Save click"}
+{"t": 1793633737.965, "who": "bench", "msg": "appended a torn journal line: '{\"t\": 1793630000.1, \"event\": \"CONFIRMATI'"}
+{"t": 1793633741.973, "who": "bench", "msg": "executor started (restart), pid 75330"}
+{"t": 1793633751.163, "who": "bench", "msg": "independent host check: {\"household\": \"DEMO-HH-014\", \"period\": \"2026-11\", \"records_on_host\": 1, \"numbers\": [\"R-10481\"], \"values\": [{\"members\": \"3\", \"effective_date\": \"12/01/2026\", \"monthly_wages\": \"1840.00\", \"monthly_benefits\": \"260.00\"}]}"}

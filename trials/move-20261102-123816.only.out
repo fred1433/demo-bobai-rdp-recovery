@@ -1,0 +1,17 @@
+12:38:20 [info] Transaction DEMO-HH-014 / 2026-11: 4 prepared values. Model on exceptions: qwen2.5vl:7b via Ollama (local).
+12:38:24 [check] Pre-check: no saved record for DEMO-HH-014, period 2026-11.
+12:38:25 [check] Form open for DEMO-HH-014, period 2026-11 (read on screen).
+12:38:26 [action] Entering Members in household: 3
+12:38:28 [check] Members in household: read back 3, matches.
+12:38:28 [action] Entering Effective date: 12/01/2026
+12:38:32 [check] Effective date: read back 12/01/2026, matches.
+12:38:33 [action] Entering Monthly wages: 1840.00
+12:38:37 [check] Monthly wages: read back 1840.00, matches.
+12:38:38 [action] Entering Monthly benefits: 260.00
+12:38:41 [check] Monthly benefits: read back 260.00, matches.
+12:38:44 [check] Final read-back: all 4 values on screen match the expected values.
+12:38:45 [action] Submit intent journaled (fsync), then Save clicked. Waiting for the application's answer.
+12:38:48 [info] Confirmation box shows R-10481. Not trusted alone: reopening the record.
+12:38:51 [check] R-10481 reopened: household DEMO-HH-014, period 2026-11, 4 of 4 values match the submitted values.
+12:38:52 [ok] Status: COMPLETED_VERIFIED R-10481. Save clicks in journal: 1. Model calls this run: 0.
+{"status": "COMPLETED_VERIFIED", "ref": "R-10481", "model_calls": 0, "inputs_sent": 54, "save_clicks_in_journal": 1, "operator_values": {}}

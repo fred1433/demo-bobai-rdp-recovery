@@ -1,0 +1,111 @@
+{
+ "first_exit": -9,
+ "restart_exit": 0,
+ "restart_summary": {
+  "status": "RECOVERED_VERIFIED",
+  "ref": "R-10481",
+  "model_calls": 0,
+  "inputs_sent": 17,
+  "save_clicks_in_journal": 1,
+  "operator_values": {
+   "monthly_wages": "1865.00"
+  }
+ },
+ "frame": [
+  127,
+  59,
+  1026,
+  741
+ ],
+ "scenario": "recovery",
+ "faults": {
+  "save_latency": 2.5,
+  "index_delay": 0
+ },
+ "host_check": {
+  "household": "DEMO-HH-014",
+  "period": "2026-11",
+  "records_on_host": 1,
+  "numbers": [
+   "R-10481"
+  ],
+  "values": [
+   {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1865.00",
+    "monthly_benefits": "260.00"
+   }
+  ]
+ },
+ "journal": [
+  {
+   "t": 1793633200.339,
+   "event": "PRECHECK_NONE"
+  },
+  {
+   "t": 1793633204.413,
+   "event": "FIELD_SET",
+   "field": "members",
+   "value": "3"
+  },
+  {
+   "t": 1793633208.272,
+   "event": "FIELD_SET",
+   "field": "effective_date",
+   "value": "12/01/2026"
+  },
+  {
+   "t": 1793633212.671,
+   "event": "FIELD_SET",
+   "field": "monthly_wages",
+   "value": "1840.00"
+  },
+  {
+   "t": 1793633222.743,
+   "event": "OPERATOR_VALUE",
+   "field": "monthly_wages",
+   "entered": "1840.00",
+   "on_screen": "1865.00"
+  },
+  {
+   "t": 1793633225.966,
+   "event": "FIELD_SET",
+   "field": "monthly_benefits",
+   "value": "260.00"
+  },
+  {
+   "t": 1793633230.051,
+   "event": "SUBMIT_INTENT",
+   "run": "20261102-122636",
+   "values": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1865.00",
+    "monthly_benefits": "260.00"
+   },
+   "read_back": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1865.00",
+    "monthly_benefits": "260.00"
+   }
+  },
+  {
+   "t": 1793633230.275,
+   "event": "SAVE_CLICK_SENT",
+   "intent_t": 1793633230.051
+  },
+  {
+   "t": 1793633234.446,
+   "event": "RECOVERY_START",
+   "intent_t": 1793633230.051
+  },
+  {
+   "t": 1793633243.536,
+   "event": "RECOVERED_VERIFIED",
+   "number": "R-10481",
+   "searches": 1
+  }
+ ]
+}

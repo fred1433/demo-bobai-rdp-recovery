@@ -1,6 +1,7 @@
 """Operator control: pause / resume / stop, checked before EVERY single input event.
 
     python -m executor.control pause|resume|stop|status
+    python -m executor.control clear data/<transaction>.json   # after checking the application by hand
 
 The signal is a local file, so it works from any terminal, hotkey tool or button on the
 customer's workstation. A pause takes effect before the next key or click; it cannot undo a
@@ -35,5 +36,14 @@ if __name__ == "__main__":
     elif cmd == "resume":
         put("run")
         print("run")
+    elif cmd == "clear":
+        # The operator has checked the application and states the case is settled: closes an
+        # unconcluded submission (or a damaged journal) so the next run starts with a pre-check search.
+        import json
+        from .journal import Journal
+        tx = json.load(open(sys.argv[2]))
+        j = Journal(tx["household_id"], tx["period"])
+        j.write("OPERATOR_CLEARED", note=" ".join(sys.argv[3:]) or "checked by operator")
+        print("cleared", j.path)
     else:
-        sys.exit("usage: pause|resume|stop|status")
+        sys.exit("usage: pause|resume|stop|status|clear <transaction.json>")

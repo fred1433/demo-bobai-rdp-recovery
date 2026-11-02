@@ -65,6 +65,7 @@ class Runner:
         os.makedirs(os.path.join(self.dir, "shots"), exist_ok=True)
         self.logf = open(os.path.join(self.dir, "log.jsonl"), "a")
         self.typed, self.verified_fields = {}, set()
+        self.in_progress, self.asked, self.current = {}, set(), None
         self.precheck_done = False
         self.shot_n = 0
         self.inputs = 0
@@ -98,11 +99,13 @@ class Runner:
         self.s.click(x, y)
         self.inputs += 1
 
-    def type_text(self, text):
+    def type_text(self, text, key=None):
         for ch in text:
             self.gate()
             self.s.char(ch)
             self.inputs += 1
+            if key:
+                self.in_progress[key] += ch  # exactly what the executor has typed so far
             time.sleep(0.09)
 
     def select_all(self):
@@ -203,41 +206,59 @@ class Runner:
                     continue
                 cur = self.read_field(img, ws, key)
                 exp = self.expected[key]
+                if cur is None:
+                    raise Assistance("UNREADABLE", f"{label} cannot be read reliably from the screen.")
                 if cur == exp:
+                    self.in_progress.pop(key, None)
                     if key not in self.verified_fields:
                         self.verified_fields.add(key)
                         self.log("check", f"{label}: screen reads {cur}, matches.")
                     continue
-                if cur is None:
-                    raise Assistance("UNREADABLE", f"{label} cannot be read reliably from the screen.")
-                if key in self.typed and cur != self.typed[key]:
+                # What the executor itself put in this field: its finished entry, the part typed before
+                # a pause, or nothing. Anything else on screen was typed by a person: never overwritten.
+                own = self.typed.get(key, self.in_progress.get(key, ""))
+                if cur != own:
                     time.sleep(0.7)  # confirm on a second, later capture before calling it a change
                     img, ws = self.look()
                     cur = self.read_field(img, ws, key)
-                    if cur == self.typed[key]:
+                    if cur == exp:
                         continue
-                if key in self.typed and cur != self.typed[key]:
+                if cur != own and key in self.typed:
                     self.log("warn", f"{label} changed on screen by the operator: entered {self.typed[key]}, now {cur}. "
                                      f"Kept, not overwritten.", shot=True, img=img)
                     self.journal.write("OPERATOR_VALUE", field=key, entered=self.typed[key], on_screen=cur)
-                    self.expected[key] = cur
-                    self.typed[key] = cur
+                    self.expected[key] = self.typed[key] = cur
                     self.verified_fields.add(key)
                     continue
-                if cur and not exp.startswith(cur):
-                    raise Assistance("UNEXPECTED_VALUE", f"{label} already holds a value the agent did not enter.")
+                if cur != own and cur != "":
+                    if key in self.asked:
+                        self.log("warn", f"{label}: the operator resumed with {cur} on screen (the agent had typed "
+                                         f"'{own}'). Kept as the operator's value, not overwritten.", shot=True, img=img)
+                        self.journal.write("OPERATOR_VALUE", field=key, entered=own, on_screen=cur)
+                        self.expected[key] = self.typed[key] = cur
+                        self.in_progress.pop(key, None)
+                        self.verified_fields.add(key)
+                        continue
+                    self.asked.add(key)
+                    raise Assistance("HUMAN_EDIT", f"{label} holds {cur}, which the agent did not type (it had typed "
+                                                   f"'{own}'). It will not overwrite it. Finish or correct the value, "
+                                                   f"then resume: the value on screen will be kept.")
                 box = self.field_box(img, ws, key)
                 self.log("action", f"Entering {label}: {exp}")
+                self.current = key
                 self.click(box[0] + box[2] - 8, box[1] + box[3] // 2)
                 time.sleep(0.25)
                 self.select_all()
-                self.type_text(exp)
+                self.in_progress[key] = ""
+                self.type_text(exp, key)
+                self.current = None
                 time.sleep(0.4)
                 img, ws = self.look()
                 got = self.read_field(img, ws, key)
                 if got != exp:
                     raise Assistance("READBACK_MISMATCH", f"{label}: typed {exp}, screen reads {got}.")
                 self.typed[key] = exp
+                self.in_progress.pop(key, None)
                 self.verified_fields.add(key)
                 self.journal.write("FIELD_SET", field=key, value=exp)
                 self.log("check", f"{label}: read back {got}, matches.")
@@ -256,9 +277,46 @@ class Runner:
         return seen
 
     # ------------------------------------------------------------------ search & records
+    def settle(self, timeout=20):
+        """Bring the screen back to the search list without submitting anything. The application
+        may still be saving: while the form shows, wait (bounded) instead of leaving it. A
+        confirmation box is read as a hint only and closed; a record view is closed."""
+        t0, waited = time.time(), False
+        while True:
+            img, ws = self.look()
+            kind = self.screen_kind(img, ws)
+            if kind == "save_confirmation":
+                m = re.search(r"R-\d{5}", ocr.text_of(ws))
+                self.log("info", f"A confirmation box is on screen ({m.group(0) if m else 'no number'}). "
+                                 "Treated as a hint only; closing it and searching.", shot=True, img=img)
+                b = ocr.find_phrase(ws, "OK")
+                self.click(b[0] + b[2] // 2, b[1] + b[3] // 2)
+                time.sleep(0.8)
+                continue
+            if kind == "record_view":
+                b = ocr.find_phrase(ws, "Close")
+                self.click(b[0] + b[2] // 2, b[1] + b[3] // 2)
+                time.sleep(0.8)
+                continue
+            if kind == "form":
+                if time.time() - t0 < timeout:
+                    if not waited:
+                        self.log("info", "The form is still on screen; the application may still be saving. "
+                                         f"Waiting up to {timeout} s before leaving it.", shot=True, img=img)
+                        waited = True
+                    self.gate()
+                    time.sleep(0.6)
+                    continue
+                self.log("info", "The form is still on screen. Leaving it with Cancel (nothing is submitted).", shot=True, img=img)
+                b = ocr.find_phrase(ws, "Cancel")
+                self.click(b[0] + b[2] // 2, b[1] + b[3] // 2)
+                time.sleep(0.8)
+                t0 = time.time() - timeout  # do not wait again
+                continue
+            return img, ws, kind
+
     def search(self):
-        img, ws = self.look()
-        kind = self.screen_kind(img, ws)
+        img, ws, kind = self.settle()
         if kind == "unexpected":
             self.handle_unexpected(img)
         if kind != "search":
@@ -330,13 +388,19 @@ class Runner:
     def submit_save(self, review):
         if self.journal.open_submission():
             raise Assistance("SUBMIT_BLOCKED", "Journal holds an unconcluded submission. Refusing to submit again.")
-        intent = self.journal.write("SUBMIT_INTENT", run=self.run_id, values=self.expected, read_back=review)
-        self.log("action", "Submit intent written to the journal (fsync) before clicking Save.")
         img, ws = self.look()
         b = ocr.find_phrase(ws, "Save")
-        self.click(b[0] + b[2] // 2, b[1] + b[3] // 2)
+        if not b:
+            raise Assistance("SAVE_NOT_FOUND", "The Save button is not visible.")
+        self.gate()  # last point where pause, stop or focus loss can prevent the submission
+        intent = self.journal.write("SUBMIT_INTENT", run=self.run_id, values=self.expected, read_back=review)
+        if os.environ.get("RDP_TEST_FAULT") == "exit_before_click":  # test hook: crash between intent and click
+            os._exit(137)
+        # From here the click is decided: no pause check between the journaled intent and the click.
+        self.s.click(b[0] + b[2] // 2, b[1] + b[3] // 2)
+        self.inputs += 1
         self.journal.write("SAVE_CLICK_SENT", intent_t=intent["t"])
-        self.log("action", "Save clicked. Waiting for the application's answer.")
+        self.log("action", "Submit intent journaled (fsync), then Save clicked. Waiting for the application's answer.")
         return intent
 
     def after_save(self):
@@ -372,24 +436,11 @@ class Runner:
         self.journal.write("RECOVERY_START", intent_t=intent["t"])
         if not in_run:
             self.log("alert", "Save sent. Result unknown. Checking existing record.", shot=True)
+            sent = any(e["event"] == "SAVE_CLICK_SENT" and e.get("intent_t") == intent["t"] for e in self.journal.events())
             self.log("info", f"Journal: submit intent at {time.strftime('%H:%M:%S', time.localtime(intent['t']))} "
-                             f"by run {intent['run']}, Save click sent, no confirmation read. Submitting is disabled.")
-        img, ws = self.look()
-        kind = self.screen_kind(img, ws)
-        if kind == "save_confirmation":
-            m = re.search(r"R-\d{5}", ocr.text_of(ws))
-            self.log("info", f"A confirmation box is on screen ({m.group(0) if m else 'no number'}). "
-                             "Treated as a hint only; closing it and searching.", shot=True, img=img)
-            b = ocr.find_phrase(ws, "OK")
-            self.click(b[0] + b[2] // 2, b[1] + b[3] // 2)
-            img, ws = self.wait_for(lambda i, w: self.screen_kind(i, w) != "save_confirmation", 6, "box closed")
-            kind = self.screen_kind(img, ws)
-        elif kind == "form":
-            self.log("info", "The form is still on screen. Leaving it with Cancel (nothing is submitted).", shot=True, img=img)
-            b = ocr.find_phrase(ws, "Cancel")
-            self.click(b[0] + b[2] // 2, b[1] + b[3] // 2)
-            img, ws = self.wait_for(lambda i, w: self.has(w, "Find household"), 8, "search")
-            kind = "search" if img is not None else "unexpected"
+                             f"by run {intent['run']}, " + ("Save click sent" if sent else "Save click not journaled (may or may not have been sent)")
+                             + ", no confirmation read. Submitting is disabled.")
+        img, ws, kind = self.settle()
         if kind == "unexpected":
             self.handle_unexpected(img)
         attempts, wait = 3, 5
@@ -456,7 +507,10 @@ class Runner:
             self.log("alert", "Focus left the remote desktop window. Suspended; the agent will not take focus back. "
                               "Resume when ready.")
         elif why == "pause":
-            self.log("alert", "Paused by operator. No further input is sent.", shot=True)
+            mid = ""
+            if self.current and self.current in self.in_progress:
+                mid = f" Mid-entry in {LABEL[self.current]}: '{self.in_progress[self.current]}' typed so far."
+            self.log("alert", "Paused by operator. No further input is sent." + mid, shot=True)
         while True:
             c = control.get()
             if c == "stop":
@@ -470,33 +524,43 @@ class Runner:
             time.sleep(0.2)
 
     def main(self):
-        open_sub = self.journal.open_submission()
         self.log("info", f"Transaction {self.hh} / {self.period}: {len(self.prepared)} prepared values. "
                          f"Model on exceptions: {self.vision.name}.")
-        while True:
+        status, ref = None, None
+        bad = self.journal.unreadable()
+        if bad:
+            self.log("warn", f"Journal: {len(bad)} unreadable line(s) ignored (torn write?): {bad[-1][:60]!r}")
+            if not self.journal.open_submission():
+                self.journal.write("ASSISTANCE_REQUIRED", code="JOURNAL_DAMAGED")
+                self.log("alert", "Assistance required: the journal's last state cannot be read, so whether a Save was "
+                                  "sent is unknown. Not submitting. Check the application, then run "
+                                  "'python -m executor.control clear <transaction.json>'.", shot=True)
+                status, ref = "ASSISTANCE_REQUIRED", "JOURNAL_DAMAGED"
+        while status is None:
             try:
-                if open_sub:
-                    status, ref = self.recover()
-                else:
-                    status, ref = self.normal()
-                break
-            except Paused:
-                self.hold("pause")
-            except FocusLost:
-                self.hold("focus")
-            except Assistance as a:
-                self.journal.write("ASSISTANCE_REQUIRED", code=a.code, msg=a.msg)
-                self.log("alert", f"Assistance required: {a.msg}", shot=True)
-                if a.final:
-                    status, ref = "ASSISTANCE_REQUIRED", a.code
-                    break
-                control.put("pause")
-                self.hold("assist")
-            except Stopped:
+                try:
+                    # The journal is read again on every pass: a pause after the intent or after the
+                    # click leads to verification, never back to data entry.
+                    if self.journal.open_submission():
+                        status, ref = self.recover()
+                    else:
+                        status, ref = self.normal()
+                except Paused:
+                    self.hold("pause")
+                except FocusLost:
+                    self.hold("focus")
+                except Assistance as a:
+                    self.journal.write("ASSISTANCE_REQUIRED", code=a.code, msg=a.msg)
+                    self.log("alert", f"Assistance required: {a.msg}", shot=True)
+                    if a.final:
+                        status, ref = "ASSISTANCE_REQUIRED", a.code
+                    else:
+                        control.put("pause")
+                        self.hold("assist")
+            except Stopped:  # from any step, including while held in a pause
                 self.journal.write("STOPPED_BY_OPERATOR")
-                self.log("alert", "Stopped by operator.")
+                self.log("alert", "Stopped by operator. No further input.", shot=True)
                 status, ref = "STOPPED", None
-                break
         nsub = sum(1 for e in self.journal.events() if e["event"] == "SAVE_CLICK_SENT")
         summary = {"status": status, "ref": ref, "model_calls": self.vision.calls, "inputs_sent": self.inputs,
                    "save_clicks_in_journal": nsub, "operator_values": {k: v for k, v in self.expected.items()

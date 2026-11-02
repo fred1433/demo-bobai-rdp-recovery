@@ -1,0 +1,4 @@
+{"t": 1793633899.855, "who": "bench", "msg": "reset: faults={\"save_latency\": 2.5, \"index_delay\": 0}"}
+{"t": 1793633900.014, "who": "bench", "msg": "executor started (only), pid 80461"}
+{"t": 1793633912.355, "who": "operator", "msg": "moves the remote desktop window to (200, 100) on the local screen"}
+{"t": 1793633932.642, "who": "bench", "msg": "independent host check: {\"household\": \"DEMO-HH-014\", \"period\": \"2026-11\", \"records_on_host\": 1, \"numbers\": [\"R-10481\"], \"values\": [{\"members\": \"3\", \"effective_date\": \"12/01/2026\", \"monthly_wages\": \"1840.00\", \"monthly_benefits\": \"260.00\"}]}"}

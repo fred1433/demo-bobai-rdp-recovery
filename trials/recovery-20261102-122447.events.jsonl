@@ -1,0 +1,9 @@
+{"t": 1793633090.682, "who": "bench", "msg": "reset: faults={\"save_latency\": 2.5, \"index_delay\": 0}"}
+{"t": 1793633091.686, "who": "bench", "msg": "recording started: runs/raw/recovery-20261102-122447.mkv"}
+{"t": 1793633091.828, "who": "bench", "msg": "executor started (first), pid 57939"}
+{"t": 1793633107.918, "who": "operator", "msg": "Pause pressed"}
+{"t": 1793633111.209, "who": "operator", "msg": "operator typed 1865.00 into Monthly wages"}
+{"t": 1793633112.433, "who": "operator", "msg": "Resume pressed"}
+{"t": 1793633125.073, "who": "bench", "msg": "executor process killed with SIGKILL right after the Save click, before any confirmation was read"}
+{"t": 1793633129.081, "who": "bench", "msg": "executor started (restart), pid 59059"}
+{"t": 1793633142.204, "who": "bench", "msg": "independent host check: {\"household\": \"DEMO-HH-014\", \"period\": \"2026-11\", \"records_on_host\": 1, \"numbers\": [\"R-10481\"], \"values\": [{\"members\": \"3\", \"effective_date\": \"12/01/2026\", \"monthly_wages\": \"1865.00\", \"monthly_benefits\": \"260.00\"}]}"}

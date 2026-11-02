@@ -12,7 +12,10 @@ PW=$(cat .run/clerk_password)
 export DISPLAY=127.0.0.1:99
 if ! docker ps --format '{{.Names}}' | grep -qx rdp-demo-host; then
   docker rm -f rdp-demo-host >/dev/null 2>&1 || true
-  docker run -d --name rdp-demo-host -p 127.0.0.1:3389:3389 -e CLERK_PASSWORD="$PW" rdp-demo-host >/dev/null
+  # the host shows the same clock as the client-side journal (fixed offset, POSIX TZ form)
+  Z=$(date +%z); H=$(echo "$Z" | cut -c2-3); S=$(echo "$Z" | cut -c1)
+  if [ "$S" = "-" ]; then HOST_TZ="<-$H>$((10#$H))"; else HOST_TZ="<+$H>-$((10#$H))"; fi
+  docker run -d --name rdp-demo-host -p 127.0.0.1:3389:3389 -e CLERK_PASSWORD="$PW" -e HOST_TZ="$HOST_TZ" rdp-demo-host >/dev/null
 fi
 if ! docker ps --format '{{.Names}}' | grep -qx rdp-demo-screen; then
   docker rm -f rdp-demo-screen >/dev/null 2>&1 || true

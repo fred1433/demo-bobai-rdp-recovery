@@ -1,0 +1,18 @@
+12:27:27 [info] Transaction DEMO-HH-014 / 2026-11: 4 prepared values. Model on exceptions: qwen2.5vl:7b via Ollama (local).
+12:27:31 [check] Pre-check: no saved record for DEMO-HH-014, period 2026-11.
+12:27:32 [check] Form open for DEMO-HH-014, period 2026-11 (read on screen).
+12:27:33 [action] Entering Members in household: 3
+12:27:35 [check] Members in household: read back 3, matches.
+12:27:35 [action] Entering Effective date: 12/01/2026
+12:27:39 [check] Effective date: read back 12/01/2026, matches.
+12:27:40 [action] Entering Monthly wages: 1840.00
+12:27:43 [check] Monthly wages: read back 1840.00, matches.
+12:27:43 [action] Entering Monthly benefits: 260.00
+12:27:43 [alert] Paused by operator. No further input is sent.
+12:27:48 [info] Resume requested. Fresh capture; every value is read again before any input.
+12:27:49 [check] Form open for DEMO-HH-014, period 2026-11 (read on screen).
+12:27:53 [warn] Monthly wages changed on screen by the operator: entered 1840.00, now 1865.00. Kept, not overwritten.
+12:27:54 [action] Entering Monthly benefits: 260.00
+12:27:56 [check] Monthly benefits: read back 260.00, matches.
+12:28:00 [check] Final read-back: all 4 values on screen match the expected values.
+12:28:01 [action] Submit intent journaled (fsync), then Save clicked. Waiting for the application's answer.

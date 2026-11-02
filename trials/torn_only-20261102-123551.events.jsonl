@@ -1,0 +1,4 @@
+{"t": 1793633754.766, "who": "bench", "msg": "reset: faults={\"save_latency\": 2.5, \"index_delay\": 0}"}
+{"t": 1793633754.901, "who": "bench", "msg": "appended a torn journal line: '{\"t\": 1793630000.1, \"event\": \"SUBMIT_IN'"}
+{"t": 1793633754.904, "who": "bench", "msg": "executor started (only), pid 75662"}
+{"t": 1793633755.3, "who": "bench", "msg": "independent host check: {\"household\": \"DEMO-HH-014\", \"period\": \"2026-11\", \"records_on_host\": 0, \"numbers\": [], \"values\": []}"}

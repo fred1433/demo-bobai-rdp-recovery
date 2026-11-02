@@ -1,8 +1,0 @@
-{"t": 1793627519.208, "who": "bench", "msg": "reset: faults={\"save_latency\": 2.5, \"index_delay\": 0}"}
-{"t": 1793627519.21, "who": "bench", "msg": "executor started (first), pid 90239"}
-{"t": 1793627532.762, "who": "operator", "msg": "Pause pressed"}
-{"t": 1793627535.826, "who": "operator", "msg": "operator typed 1865.00 into Monthly wages"}
-{"t": 1793627537.054, "who": "operator", "msg": "Resume pressed"}
-{"t": 1793627549.437, "who": "bench", "msg": "executor process killed with SIGKILL right after the Save click, before any confirmation was read"}
-{"t": 1793627553.442, "who": "bench", "msg": "executor started (restart), pid 90935"}
-{"t": 1793627561.697, "who": "bench", "msg": "independent host check: {\"household\": \"DEMO-HH-014\", \"period\": \"2026-11\", \"records_on_host\": 1, \"numbers\": [\"R-10481\"], \"values\": [{\"members\": \"3\", \"effective_date\": \"12/01/2026\", \"monthly_wages\": \"1865.00\", \"monthly_benefits\": \"260.00\"}]}"}

@@ -1,0 +1,171 @@
+{
+ "first_exit": 137,
+ "restart_summary": {
+  "status": "ASSISTANCE_REQUIRED",
+  "ref": "RESULT_UNKNOWN",
+  "model_calls": 0,
+  "inputs_sent": 43,
+  "save_clicks_in_journal": 0,
+  "operator_values": {}
+ },
+ "summary": {
+  "status": "COMPLETED_VERIFIED",
+  "ref": "R-10481",
+  "model_calls": 0,
+  "inputs_sent": 54,
+  "save_clicks_in_journal": 1,
+  "operator_values": {}
+ },
+ "restart_exit": 3,
+ "after_clear_exit": 0,
+ "frame": [
+  127,
+  59,
+  1026,
+  741
+ ],
+ "scenario": "intent_crash_clear",
+ "faults": {
+  "save_latency": 2.5,
+  "index_delay": 0
+ },
+ "host_check": {
+  "household": "DEMO-HH-014",
+  "period": "2026-11",
+  "records_on_host": 1,
+  "numbers": [
+   "R-10481"
+  ],
+  "values": [
+   {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   }
+  ]
+ },
+ "journal": [
+  {
+   "t": 1793633616.186,
+   "event": "PRECHECK_NONE"
+  },
+  {
+   "t": 1793633620.147,
+   "event": "FIELD_SET",
+   "field": "members",
+   "value": "3"
+  },
+  {
+   "t": 1793633623.886,
+   "event": "FIELD_SET",
+   "field": "effective_date",
+   "value": "12/01/2026"
+  },
+  {
+   "t": 1793633628.097,
+   "event": "FIELD_SET",
+   "field": "monthly_wages",
+   "value": "1840.00"
+  },
+  {
+   "t": 1793633631.141,
+   "event": "FIELD_SET",
+   "field": "monthly_benefits",
+   "value": "260.00"
+  },
+  {
+   "t": 1793633634.777,
+   "event": "SUBMIT_INTENT",
+   "run": "20261102-123332",
+   "values": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   },
+   "read_back": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   }
+  },
+  {
+   "t": 1793633634.885,
+   "event": "RECOVERY_START",
+   "intent_t": 1793633634.777
+  },
+  {
+   "t": 1793633677.579,
+   "event": "ASSISTANCE_REQUIRED",
+   "code": "RESULT_UNKNOWN",
+   "msg": "Save was sent, but no record is visible after 3 searches over 21 s. An empty search does not prove nothing was saved. Not submitting again. Please check the application."
+  },
+  {
+   "t": 1793633677.852,
+   "event": "OPERATOR_CLEARED",
+   "note": "operator checked: no record saved"
+  },
+  {
+   "t": 1793633681.95,
+   "event": "PRECHECK_NONE"
+  },
+  {
+   "t": 1793633685.913,
+   "event": "FIELD_SET",
+   "field": "members",
+   "value": "3"
+  },
+  {
+   "t": 1793633689.679,
+   "event": "FIELD_SET",
+   "field": "effective_date",
+   "value": "12/01/2026"
+  },
+  {
+   "t": 1793633693.839,
+   "event": "FIELD_SET",
+   "field": "monthly_wages",
+   "value": "1840.00"
+  },
+  {
+   "t": 1793633696.87,
+   "event": "FIELD_SET",
+   "field": "monthly_benefits",
+   "value": "260.00"
+  },
+  {
+   "t": 1793633700.581,
+   "event": "SUBMIT_INTENT",
+   "run": "20261102-123437",
+   "values": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   },
+   "read_back": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   }
+  },
+  {
+   "t": 1793633700.799,
+   "event": "SAVE_CLICK_SENT",
+   "intent_t": 1793633700.581
+  },
+  {
+   "t": 1793633704.266,
+   "event": "CONFIRMATION_SEEN",
+   "number": "R-10481"
+  },
+  {
+   "t": 1793633708.394,
+   "event": "CONFIRMED_AND_VERIFIED",
+   "number": "R-10481"
+  }
+ ]
+}

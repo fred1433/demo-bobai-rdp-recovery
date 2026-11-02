@@ -1,0 +1,102 @@
+{
+ "exit": 3,
+ "summary": {
+  "status": "ASSISTANCE_REQUIRED",
+  "ref": "RESULT_UNKNOWN",
+  "model_calls": 0,
+  "inputs_sent": 93,
+  "save_clicks_in_journal": 1,
+  "operator_values": {}
+ },
+ "frame": [
+  127,
+  59,
+  1026,
+  741
+ ],
+ "scenario": "ambiguous",
+ "faults": {
+  "save_latency": 2.5,
+  "index_delay": 600,
+  "quiet_save": true
+ },
+ "host_check": {
+  "household": "DEMO-HH-014",
+  "period": "2026-11",
+  "records_on_host": 1,
+  "numbers": [
+   "R-10481"
+  ],
+  "values": [
+   {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   }
+  ]
+ },
+ "journal": [
+  {
+   "t": 1793633359.487,
+   "event": "PRECHECK_NONE"
+  },
+  {
+   "t": 1793633363.488,
+   "event": "FIELD_SET",
+   "field": "members",
+   "value": "3"
+  },
+  {
+   "t": 1793633367.333,
+   "event": "FIELD_SET",
+   "field": "effective_date",
+   "value": "12/01/2026"
+  },
+  {
+   "t": 1793633371.59,
+   "event": "FIELD_SET",
+   "field": "monthly_wages",
+   "value": "1840.00"
+  },
+  {
+   "t": 1793633374.673,
+   "event": "FIELD_SET",
+   "field": "monthly_benefits",
+   "value": "260.00"
+  },
+  {
+   "t": 1793633378.5,
+   "event": "SUBMIT_INTENT",
+   "run": "20261102-122915",
+   "values": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   },
+   "read_back": {
+    "members": "3",
+    "effective_date": "12/01/2026",
+    "monthly_wages": "1840.00",
+    "monthly_benefits": "260.00"
+   }
+  },
+  {
+   "t": 1793633378.73,
+   "event": "SAVE_CLICK_SENT",
+   "intent_t": 1793633378.5
+  },
+  {
+   "t": 1793633382.161,
+   "event": "RECOVERY_START",
+   "intent_t": 1793633378.5
+  },
+  {
+   "t": 1793633403.444,
+   "event": "ASSISTANCE_REQUIRED",
+   "code": "RESULT_UNKNOWN",
+   "msg": "Save was sent, but no record is visible after 3 searches over 21 s. An empty search does not prove nothing was saved. Not submitting again. Please check the application."
+  }
+ ]
+}

@@ -1,0 +1,5 @@
+12:35:55 [info] Transaction DEMO-HH-014 / 2026-11: 4 prepared values. Model on exceptions: qwen2.5vl:7b via Ollama (local).
+12:35:55 [warn] Journal: 1 unreadable line(s) ignored (torn write?): '{"t": 1793630000.1, "event": "SUBMIT_IN'
+12:35:55 [alert] Assistance required: the journal's last state cannot be read, so whether a Save was sent is unknown. Not submitting. Check the application, then run 'python -m executor.control clear <transaction.json>'.
+12:35:55 [alert] Status: ASSISTANCE_REQUIRED JOURNAL_DAMAGED. Save clicks in journal: 0. Model calls this run: 0.
+{"status": "ASSISTANCE_REQUIRED", "ref": "JOURNAL_DAMAGED", "model_calls": 0, "inputs_sent": 0, "save_clicks_in_journal": 0, "operator_values": {}}

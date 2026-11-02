@@ -1,0 +1,5 @@
+{"t": 1793633758.98, "who": "bench", "msg": "reset: faults={\"save_latency\": 2.5, \"index_delay\": 0, \"popup_on_income_tab\": true}"}
+{"t": 1793633759.118, "who": "bench", "msg": "executor started (only), pid 75836"}
+{"t": 1793633784.857, "who": "operator", "msg": "operator clicked Continue"}
+{"t": 1793633785.888, "who": "operator", "msg": "Resume pressed"}
+{"t": 1793633806.978, "who": "bench", "msg": "independent host check: {\"household\": \"DEMO-HH-014\", \"period\": \"2026-11\", \"records_on_host\": 1, \"numbers\": [\"R-10481\"], \"values\": [{\"members\": \"3\", \"effective_date\": \"12/01/2026\", \"monthly_wages\": \"1840.00\", \"monthly_benefits\": \"260.00\"}]}"}

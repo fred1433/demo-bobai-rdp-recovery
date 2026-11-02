@@ -1,0 +1,12 @@
+12:33:32 [info] Transaction DEMO-HH-014 / 2026-11: 4 prepared values. Model on exceptions: qwen2.5vl:7b via Ollama (local).
+12:33:36 [check] Pre-check: no saved record for DEMO-HH-014, period 2026-11.
+12:33:37 [check] Form open for DEMO-HH-014, period 2026-11 (read on screen).
+12:33:38 [action] Entering Members in household: 3
+12:33:40 [check] Members in household: read back 3, matches.
+12:33:40 [action] Entering Effective date: 12/01/2026
+12:33:43 [check] Effective date: read back 12/01/2026, matches.
+12:33:45 [action] Entering Monthly wages: 1840.00
+12:33:48 [check] Monthly wages: read back 1840.00, matches.
+12:33:48 [action] Entering Monthly benefits: 260.00
+12:33:51 [check] Monthly benefits: read back 260.00, matches.
+12:33:54 [check] Final read-back: all 4 values on screen match the expected values.
