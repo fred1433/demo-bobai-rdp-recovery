@@ -1,5 +1,5 @@
 // Serves site/ under https://theaipipe.com/demos/rdp-recovery/ (static files only).
-// The route is more specific than the galerie-presell route theaipipe.com/demos/*, so it wins.
+// This route is more specific than the general demos route, so it takes precedence.
 // Byte ranges are answered here so the page's chapter buttons can seek inside the videos.
 const BASE = '/demos/rdp-recovery';
 export default {
